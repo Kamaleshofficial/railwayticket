@@ -1,0 +1,350 @@
+-- Create a schema
+
+CREATE USER chennai_central_metro IDENTIFIED BY password;
+
+-- Grant necessary privileges to the schema
+GRANT CONNECT, RESOURCE TO chennai_central_metro;
+
+-- Connect to the new schema
+CONNECT chennai_central_metro/password;
+
+-- Drop tables if they exist
+DROP TABLE Ticket CASCADE CONSTRAINTS;
+DROP TABLE UserAccount CASCADE CONSTRAINTS;
+DROP TABLE Train CASCADE CONSTRAINTS;
+DROP TABLE Station CASCADE CONSTRAINTS; 
+
+-- Create Station Table
+CREATE TABLE Station (
+    StationID NUMBER PRIMARY KEY,
+    StationName VARCHAR2(255) NOT NULL,
+    Location VARCHAR2(255) NOT NULL
+    
+); 
+
+-- Create Train Table
+CREATE TABLE Train (
+    TrainID NUMBER PRIMARY KEY,
+    TrainName VARCHAR2(255) NOT NULL,
+    SourceStationID NUMBER,
+    DestinationStationID NUMBER,
+    DepartureTime TIMESTAMP,
+    ArrivalTime TIMESTAMP,
+    FOREIGN KEY (SourceStationID) REFERENCES Station(StationID),
+    FOREIGN KEY (DestinationStationID) REFERENCES Station(StationID)
+);
+
+-- Create UserAccount Table
+CREATE TABLE UserAccount (
+    UserID NUMBER PRIMARY KEY,
+    Username VARCHAR2(255) NOT NULL,
+    Password VARCHAR2(255) NOT NULL,
+    Email VARCHAR2(255) NOT NULL,
+    Phone VARCHAR2(15) NOT NULL
+);
+
+
+-- Create Ticket Table
+CREATE TABLE Ticket (
+    TicketID NUMBER PRIMARY KEY,
+    UserID NUMBER,
+    TrainID NUMBER,
+    SourceStationID NUMBER,
+    DestinationStationID NUMBER,
+    Fare NUMBER(10, 2),
+    BookingTime TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES UserAccount(UserID),
+    FOREIGN KEY (TrainID) REFERENCES Train(TrainID),
+    FOREIGN KEY (SourceStationID) REFERENCES Station(StationID),
+    FOREIGN KEY (DestinationStationID) REFERENCES Station(StationID)
+); 
+-- Data for Station Table
+INSERT ALL
+INTO Station (StationID, StationName, Location) VALUES (1, 'Airport_Metro', 'Chennai_Airport')
+INTO Station (StationID, StationName, Location) VALUES (2, 'Meenambakkam_Metro', 'Meenambakkam')
+INTO Station (StationID, StationName, Location) VALUES (3, 'Nanganallur_Metro', 'Nanganallur')
+INTO Station (StationID, StationName, Location) VALUES (4, 'Alandur_Metro', 'Alandur')
+INTO Station (StationID, StationName, Location) VALUES (5, 'Ekkaduthangal_Metro', 'Ekkaduthangal')
+INTO Station (StationID, StationName, Location) VALUES (6, 'Ashoknagar_Metro', 'Ashoknagar')
+INTO Station (StationID, StationName, Location) VALUES (7, 'Vadapalani_Metro', 'Vadapalani')
+INTO Station (StationID, StationName, Location) VALUES (8, 'Arumbakkam_Metro', 'Arumbakkam')
+INTO Station (StationID, StationName, Location) VALUES (9, 'CMBT_Metro', 'Koyambedu_market')
+INTO Station (StationID, StationName, Location) VALUES (10, 'Koyambedu_Metro', 'Koyambedu')
+INTO Station (StationID, StationName, Location) VALUES (11, 'Thirumangalam_Metro', 'Thirumangalam')
+INTO Station (StationID, StationName, Location) VALUES (12, 'Annanagartower_Metro', 'Annanagartower')
+INTO Station (StationID, StationName, Location) VALUES (13, 'Annanagareast_Metro', 'Annanagareast')
+INTO Station (StationID, StationName, Location) VALUES (14, 'Shenoynagar_Metro', 'Shenoynagar')
+INTO Station (StationID, StationName, Location) VALUES (15, 'Pachiyappacollege_Metro', 'Poonamale_high_rd')
+INTO Station (StationID, StationName, Location) VALUES (16, 'Kilpaukmedicalclg_Metro', 'Kilpaukam')
+INTO Station (StationID, StationName, Location) VALUES (17, 'Nehrupark_Metro', 'Kilpaukkam')
+INTO Station (StationID, StationName, Location) VALUES (18, 'Egmore_Metro', 'Chennai_Egmore')
+INTO Station (StationID, StationName, Location) VALUES (19, 'Central_Metro', 'Chennai_Central')
+INTO Station (StationID, StationName, Location) VALUES (20, 'Tiruvottiyur_Metro', 'Tiruvottiyur')
+SELECT * FROM dual;
+
+--Data for Train Table
+INSERT ALL
+INTO Train (TrainID, TrainName, SourceStationID, DestinationStationID, DepartureTime, ArrivalTime) VALUES (1, 'Express-101', 1, 20, TO_TIMESTAMP('06:00:00', 'HH24:MI:SS'), TO_TIMESTAMP('08:00:00', 'HH24:MI:SS'))
+INTO Train (TrainID, TrainName, SourceStationID, DestinationStationID, DepartureTime, ArrivalTime) VALUES (2, 'Express-102', 1, 20, TO_TIMESTAMP('07:00:00', 'HH24:MI:SS'), TO_TIMESTAMP('09:00:00', 'HH24:MI:SS'))
+SELECT * FROM dual;
+
+-- Data for UserAccount Table
+INSERT ALL
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (1, 'user1', 'password1', 'user1@example.com', '1234567890')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (2, 'user2', 'password2', 'user2@example.com', '9876543210')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (3, 'user3', 'password3', 'user3@example.com', '5556667777')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (4, 'user4', 'password4', 'user4@example.com', '1112233445')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (5, 'user5', 'password5', 'user5@example.com', '9876543210')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (6, 'user6', 'password6', 'user6@example.com', '5556667777')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (7, 'user7', 'password7', 'user7@example.com', '1112233445')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (8, 'user8', 'password8', 'user8@example.com', '9876543210')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (9, 'user9', 'password9', 'user9@example.com', '5556667777')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (10, 'user10', 'password10', 'user10@example.com', '1112233445')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (11, 'user11', 'password11', 'user11@example.com', '9876543210')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (12, 'user12', 'password12', 'user12@example.com', '5556667777')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (13, 'user13', 'password13', 'user13@example.com', '1112233445')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (14, 'user14', 'password14', 'user14@example.com', '9876543210')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (15, 'user15', 'password15', 'user15@example.com', '5556667777')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (16, 'user16', 'password16', 'user16@example.com', '1112233445')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (17, 'user17', 'password17', 'user17@example.com', '9876543210')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (18, 'user18', 'password18', 'user18@example.com', '5556667777')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (19, 'user19', 'password19', 'user19@example.com', '1112233445')
+INTO UserAccount (UserID, Username, Password, Email, Phone) VALUES (20, 'user20', 'password20', 'user20@example.com', '9876543210')
+SELECT * FROM dual; 
+
+--Data for Ticket Table
+INSERT ALL
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (1, 1, 1, 1, 20, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (2, 2, 2, 20, 1, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (3, 3, 1, 5, 15, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (4, 4, 2, 10, 5, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (5, 5, 1, 2, 19, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (6, 6, 2, 18, 3, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (7, 7, 1, 17, 4, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (8, 8, 2, 16, 6, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (9, 9, 1, 15, 7, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (10, 10, 2, 14, 8, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (11, 11, 1, 13, 9, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (12, 12, 2, 12, 10, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (13, 13, 1, 11, 11, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (14, 14, 2, 10, 12, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (15, 15, 1, 9, 13, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (16, 16, 2, 8, 14, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (17, 17, 1, 7, 15, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (18, 18, 2, 6, 16, 10.50, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (19, 19, 1, 5, 17, 12.00, CURRENT_TIMESTAMP)
+INTO Ticket (TicketID, UserID, TrainID, SourceStationID, DestinationStationID, Fare, BookingTime) VALUES (20, 20, 2, 4, 18, 12.00, CURRENT_TIMESTAMP)
+SELECT * FROM dual; 
+
+commit;   
+
+------QUERIES 
+
+---1)Retrieve all station names in alphabetical order.
+
+SELECT StationName FROM Station ORDER BY StationName; 
+
+----2) List all trains with their departure and arrival times
+
+SELECT TrainName, DepartureTime, ArrivalTime FROM Train;
+
+----3)Find the total number of stations
+
+SELECT COUNT(*) FROM Station;
+
+---4)List all users who have booked tickets
+
+SELECT DISTINCT a.Username
+FROM UserAccount a
+JOIN Ticket b ON a.UserID = b.UserID;
+
+----5)Count the number of tickets booked for each train
+
+SELECT TrainID, COUNT(*) AS TicketCount
+FROM Ticket
+GROUP BY TrainID;
+
+----6)Find the user who booked the highest fare ticket.
+
+select a.Username,b.Fare
+from UserAccount a inner join Ticket b 
+on a.UserID=b.UserID 
+where b.Fare=(select max(b.Fare) from Ticket b);
+
+----7)Identify the users who booked tickets for a specific train
+
+select a.Username
+from UserAccount a inner join Ticket b
+on a.UserID=b.UserID
+where b.TrainID= 1;
+
+----8)Calculate the total revenue generated from ticket sales
+
+SELECT SUM(Fare) AS Total_Revenue FROM Ticket;
+
+-----9)Find the user who booked the most number of tickets
+
+SELECT U.Username, COUNT(*) AS TicketCount
+FROM UserAccount U
+JOIN Ticket T ON U.UserID = T.UserID
+GROUP BY U.UserID, U.Username
+ORDER BY TicketCount DESC
+FETCH FIRST 1 ROWS ONLY;
+
+---10)For each station in the Station table, you need to  return the letters before the underscore ('_')
+
+select StationName,
+SUBSTR(StationName,1,(INSTR(StationName,'_')-1)) 
+as NEW_STATION_NAME
+from Station;  
+
+--11)Show the average fare for each train
+
+SELECT a.TrainName, a.TrainID, AVG(b.Fare) as Average_fare
+FROM Train a
+INNER JOIN Ticket b ON a.TrainID = b.TrainID
+GROUP BY a.TrainID, a.TrainName;
+
+--12)Display the top 3 highest-fare tickets
+
+SELECT * 
+FROM (
+    SELECT * 
+    FROM Ticket 
+    ORDER BY Fare DESC
+) WHERE ROWNUM <= 3;
+
+--13)Retrieve the source and destination stations for a specific ticket ID
+
+SELECT T.TicketID, S1.StationName AS SourceStation, S2.StationName AS DestinationStation
+FROM Ticket T
+JOIN Station S1 ON T.SourceStationID = S1.StationID
+JOIN Station S2 ON T.DestinationStationID = S2.StationID
+WHERE T.TicketID = 5; 
+
+--14) Find the stations with names containing the letter 'a':
+
+SELECT StationName
+FROM Station
+WHERE LOWER(StationName) LIKE '%a%';
+
+--15)Display the users who booked tickets for trains departing from Chennai Central
+
+SELECT U.Username
+FROM UserAccount U
+JOIN Ticket T ON U.UserID = T.UserID
+JOIN Station S ON T.SourceStationID = S.StationID where Location='Chennai_Airport';
+
+--16)Find the train that covers the most stations
+
+SELECT b.TrainID, COUNT(distinct a.StationID) AS NumberOfStations
+FROM Station a
+JOIN Ticket b ON b.SourceStationID = a.StationID
+JOIN Ticket c ON c.DestinationStationID =a.StationID
+GROUP BY b.TrainID
+ORDER BY NumberOfStations DESC
+LIMIT 1;
+
+--17)Display the stations in reverse order (from destination to source) for a specific train
+
+SELECT T.TrainName, S.StationName
+FROM Train T
+JOIN Station S ON T.DestinationStationID = S.StationID
+WHERE T.TrainID = 1
+ORDER BY S.StationID DESC;
+
+--18)  List the stations in alphabetical order along with the total number of tickets booked for each
+
+SELECT S.StationName, COUNT(T.TicketID) AS TicketCount
+FROM Station S
+LEFT JOIN Ticket T ON S.StationID = T.SourceStationID
+GROUP BY S.StationName
+ORDER BY S.StationName;
+
+
+
+---- ROUND AND TRUNC functions used to give the approximate values here we can get the values in adecimal point also 
+----but while we using the in the CEILING and FLOOR functions We cannot get the values in a deciaml point.
+
+
+---19) Give the round off Values of the Ticket's fare at one decimal point
+
+SELECT ROUND(FARE,1) 
+FROM Ticket;
+
+---20) Give the Base value of the Ticket's fare at two decimal point
+
+SELECT TRUNC(FARE,2)
+FROM Ticket;
+
+---21) Give the Round off value of the Ticket's fare 
+
+SELECT CEILING(FARE)
+FROM Ticket;
+
+---22) Give the base Value of the TIcket's fare 
+
+SELECT FLOOR(FARE)
+FROM Ticket;
+
+------BY USING BETWEEN FUNCTION
+----23) Give the Source _StationName and Destination_StationName  which having the ticket fair between rs.10.00 to rs.11.00
+
+SELECT T.Fare,S1.StationName as SourceStation,S2.StationName as DestinationStation
+FROM Ticket T 
+JOIN Station S1 On T.SourceStationID=S1.StationID
+JOIN Station S2 on T.DestinationStationID=S2.StationID
+WHERE Fare between 10.00 and 11.00;
+
+---- BY USING IN fUNCTION 
+---24)Give the Source _StationName and Destination_StationName  which having the ticket fair rs.11.00 or rs.12.00
+
+SELECT T.Fare,S1.StationName as SourceStation,S2.StationName as DestinationStation
+FROM Ticket T 
+JOIN Station S1 On T.SourceStationID=S1.StationID
+JOIN Station S2 on T.DestinationStationID=S2.StationID
+WHERE Fare in (11.00 to 12.00)
+
+-----BY USING NOT IN FUNCTION
+-----25)Give the Source _StationName and Destination_StationName  which having the ticket fair except  rs,11.00 and rs.12.00
+
+SELECT T.Fare,S1.StationName as SourceStation,S2.StationName as DestinationStation
+FROM Ticket T 
+JOIN Station S1 On T.SourceStationID=S1.StationID
+JOIN Station S2 on T.DestinationStationID=S2.StationID
+WHERE Fare not in (11.00 to 12.00)
+
+----- BY USING CASE STATEMENT
+----26) separate the fair by their category
+
+SELECT TicketID, Fare,
+CASE
+WHEN Fare < 10 THEN 'Low Fare'
+WHEN Fare >= 10 AND Fare < 20 THEN 'Medium Fare'
+ELSE 'High Fare'
+END AS FareCategory
+FROM Ticket;
+
+---BY USING DECODE FUNCTION
+---27)In the Station table, there's a column called Location containing the names of different metro stations in Chennai.
+--- Write a SQL query using the DECODE function to categorize these stations into two zones:
+--'City Zone' for stations located in the city area.
+--'Suburb Zone' for stations located in the suburban area.
+---Provide the SQL query for this categorization, and include the resulting columns: StationID, StationName, Location, and the newly created column Zone.
+
+SELECT StationID, StationName, Location,
+DECODE(Location,
+'Chennai_Airport', 'Airport Zone',
+'Chennai_Egmore', 'Egmore Zone',
+'Chennai_Central', 'Central Zone',
+'Tiruvottiyur', 'Tiruvottiyur Zone',
+'Other Locations') AS Zone
+FROM Station;
+
+
+----BY USING REPLACE FUNCTION
+----28) If you want to perform a text replacement in the Station table's Location column, you can use the REPLACE function.
+---- Let's say you want to replace all occurrences of 'Chennai' with 'Madras' in the Location column. Here's a sample query:
+
+UPDATE Station
+SET Location = REPLACE(Location, 'Chennai', 'Madras');
